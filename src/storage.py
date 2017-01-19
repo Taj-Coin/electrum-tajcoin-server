@@ -8,7 +8,7 @@ from processor import print_log, logger
 from utils import bc_address_to_hash_160, hash_160_to_pubkey_address, hex_to_int, int_to_hex, Hash
 
 global GENESIS_HASH
-GENESIS_HASH = '00000c1dd2ca94b11281b0e50cf3ead9983967dfa0776425dcbb992d3c70db7d'
+GENESIS_HASH = '0000067865dd821b9f8b2dcdfb367c9d1344d3335fa6fc6d7940b026b88169a6'
 
 """
 Patricia tree for hashing unspents
@@ -66,7 +66,7 @@ class Storage(object):
         print_log("UTXO tree root hash:", self.root_hash.encode('hex'))
         print_log("Coins in database:", v)
 
-    # convert between creditbit addresses and 20 bytes keys used for storage. 
+    # convert between creditbit addresses and 20 bytes keys used for storage.
     def address_to_key(self, addr):
         return bc_address_to_hash_160(addr)
 
@@ -79,7 +79,7 @@ class Storage(object):
         i = self.db_utxo.iterator(start=key)
         k, _ = i.next()
 
-        p = self.get_path(k) 
+        p = self.get_path(k)
         p.append(k)
 
         out = []
@@ -94,7 +94,7 @@ class Storage(object):
         key = self.address_to_key(addr)
         i = self.db_utxo.iterator(start=key)
         k, _ = i.next()
-        if not k.startswith(key): 
+        if not k.startswith(key):
             return 0
         p = self.get_parent(k)
         d = self.get_node(p)
@@ -130,7 +130,7 @@ class Storage(object):
             out.append((item['tx_hash'], item['height']))
 
         h = self.db_hist.get(addr)
-        
+
         while h:
             item = h[0:80]
             h = h[80:]
@@ -197,14 +197,14 @@ class Storage(object):
         if batch:
             batch.put(key, out)
         else:
-            self.db_utxo.put(key, out) 
+            self.db_utxo.put(key, out)
 
 
     def get_node(self, key):
 
         s = self.db_utxo.get(key)
-        if s is None: 
-            return 
+        if s is None:
+            return
 
         #print "get node", key.encode('hex'), len(key), s.encode('hex')
 
@@ -212,7 +212,7 @@ class Storage(object):
         s = s[32:]
         d = {}
         for i in range(256):
-            if k % 2 == 1: 
+            if k % 2 == 1:
                 _hash = s[0:32]
                 value = hex_to_int(s[32:40])
                 d[chr(i)] = (_hash, value)
@@ -236,7 +236,7 @@ class Storage(object):
             items = self.get_node(key)
 
             if word[0] in items.keys():
-  
+
                 i.seek(key + word[0])
                 new_key, _ = i.next()
 
@@ -275,7 +275,7 @@ class Storage(object):
                 self.put_node(key,items)
                 break
 
-        # write 
+        # write
         s = (int_to_hex(value, 8) + int_to_hex(height,4)).decode('hex')
         self.db_utxo.put(target, s)
         # the hash of a node is the txid
@@ -334,8 +334,8 @@ class Storage(object):
                 parent_hash, parent_value = self.get_node_hash(parent, d, grandparent)
                 self.hash_list[parent] = (parent_hash, parent_value)
 
-        
-        # batch write modified nodes 
+
+        # batch write modified nodes
         batch = self.db_utxo.write_batch()
         for k, v in nodes.items():
             self.put_node(k, v, batch)
@@ -378,7 +378,7 @@ class Storage(object):
                 is_child = False
 
             if is_child:
-  
+
                 if target.startswith(new_key):
                     # add value to the child node
                     key = new_key
@@ -405,7 +405,7 @@ class Storage(object):
             raise
 
         s = self.db_utxo.get(leaf)
-        
+
         self.db_utxo.delete(leaf)
         if leaf in self.hash_list:
             self.hash_list.pop(leaf)
@@ -420,7 +420,7 @@ class Storage(object):
             letter, v = items.items()[0]
 
             self.db_utxo.delete(parent)
-            if parent in self.hash_list: 
+            if parent in self.hash_list:
                 self.hash_list.pop(parent)
 
             # we need the exact length for the iteration
@@ -450,13 +450,13 @@ class Storage(object):
         while l <256:
             i.seek(x+chr(l))
             k, v = i.next()
-            if k.startswith(x+chr(l)): 
+            if k.startswith(x+chr(l)):
                 yield k, v
                 l += 1
-            elif k.startswith(x): 
+            elif k.startswith(x):
                 yield k, v
                 l = ord(k[len(x)]) + 1
-            else: 
+            else:
                 break
 
 
@@ -469,12 +469,12 @@ class Storage(object):
             p = x[0:-j-1]
             i.seek(p)
             k, v = i.next()
-            if x.startswith(k) and x!=k: 
+            if x.startswith(k) and x!=k:
                 break
         else: raise
         return k
 
-        
+
     def hash(self, x):
         if DEBUG: return "hash("+x+")"
         return Hash(x)
@@ -567,22 +567,22 @@ class Storage(object):
 
 
 
-        
+
 
     def import_transaction(self, txid, tx, block_height, touched_addr):
 
         undo = { 'prev_addr':[] } # contains the list of pruned items for each address in the tx; also, 'prev_addr' is a list of prev addresses
-                
+
         prev_addr = []
         for i, x in enumerate(tx.get('inputs')):
             txi = (x.get('prevout_hash') + int_to_hex(x.get('prevout_n'), 4)).decode('hex')
             addr = self.get_address(txi)
-            if addr is not None: 
+            if addr is not None:
                 self.set_spent(addr, txi, txid, i, block_height, undo)
                 touched_addr.add(addr)
             prev_addr.append(addr)
 
-        undo['prev_addr'] = prev_addr 
+        undo['prev_addr'] = prev_addr
 
         # here I add only the outputs to history; maybe I want to add inputs too (that's in the other loop)
         for x in tx.get('outputs'):
@@ -611,4 +611,3 @@ class Storage(object):
                 touched_addr.add(addr)
 
         assert undo == {}
-

@@ -2,13 +2,13 @@
 
 params = {
     'creditbit_main': {
-        'pubkey_address': 28,
+        'pubkey_address': 53,
         'script_address': 5,
-        'genesis_hash': '00000c1dd2ca94b11281b0e50cf3ead9983967dfa0776425dcbb992d3c70db7d'
+        'genesis_hash': '0000067865dd821b9f8b2dcdfb367c9d1344d3335fa6fc6d7940b026b88169a6'
     },
     'creditbit_test': {
         'pubkey_address': 111,
         'script_address': 196,
-        'genesis_hash': '0x00000ee290012380667a78682c0c516fc1e9d25ce6e2bd1ad2fad3f9b4057f8d'
+        'genesis_hash': '0x005a03c21a8fd3cec753cd5d8bcb0b8b18071ee65f8c77af13e671c1bce771f4'
     }
 }

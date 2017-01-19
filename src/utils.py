@@ -27,7 +27,7 @@ __b58base = len(__b58chars)
 
 global PUBKEY_ADDRESS
 global SCRIPT_ADDRESS
-PUBKEY_ADDRESS = 28
+PUBKEY_ADDRESS = 53
 SCRIPT_ADDRESS = 5
 
 def rev_hex(s):
@@ -238,7 +238,7 @@ def init_logger(logfile):
     hdlr = logging.handlers.WatchedFileHandler(logfile)
     formatter = logging.Formatter('%(asctime)s %(message)s', "[%d/%m/%Y-%H:%M:%S]")
     hdlr.setFormatter(formatter)
-    logger.addHandler(hdlr) 
+    logger.addHandler(hdlr)
     logger.setLevel(logging.INFO)
 
 
@@ -247,6 +247,3 @@ def print_log(*args):
 
 def print_warning(message):
     logger.warning(message)
-
-
-
