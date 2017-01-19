@@ -20,7 +20,7 @@ import threading
 import time
 import hashlib
 import sys
-import x11_hash
+from pyblake2 import blake2s
 
 __b58chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 __b58base = len(__b58chars)
@@ -52,7 +52,8 @@ def var_int(i):
 
 
 Hash = lambda x: hashlib.sha256(hashlib.sha256(x).digest()).digest()
-HashX11 = lambda x: x11_hash.getPoWHash(x)
+
+HashBlake2s = lambda x: blake2s(x).digest()
 
 
 hash_encode = lambda x: x[::-1].encode('hex')
