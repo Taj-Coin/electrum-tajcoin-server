@@ -12,7 +12,7 @@ requirements.
 
 The most up-to date version of this document is available at:
 
-    https://github.com/creditbit/electrum-creditbit-server/blob/master/HOWTO.md
+    https://github.com/nevacoin/electrum-nevacoin-server/blob/master/HOWTO.md
 
 Conventions
 -----------
@@ -20,8 +20,8 @@ Conventions
 In this document, lines starting with a hash sign (#) or a dollar sign ($)
 contain commands. Commands starting with a hash should be run as root,
 commands starting with a dollar should be run as a normal user (in this
-document, we assume that user is called 'creditbit'). We also assume the
-creditbit user has sudo rights, so we use '$ sudo command' when we need to.
+document, we assume that user is called 'nevacoin'). We also assume the
+nevacoin user has sudo rights, so we use '$ sudo command' when we need to.
 
 Strings that are surrounded by "lower than" and "greater than" ( < and > )
 should be replaced by the user with something appropriate. For example,
@@ -54,9 +54,9 @@ Python libraries. Python 2.7 is the minimum supported version.
 
 **Hardware.** The lightest setup is a pruning server with diskspace 
 requirements of about 4 GB for the electrum database. However note that 
-you also need to run creditbitd and keep a copy of the full blockchain, 
+you also need to run nevacoind and keep a copy of the full blockchain, 
 which is roughly 4 GB in July 2015. If you have less than 2 GB of RAM 
-make sure you limit creditbitd to 8 concurrent connections. If you have more 
+make sure you limit nevacoind to 8 concurrent connections. If you have more 
 resources to spare you can run the server with a higher limit of historic
 transactions per address. CPU speed is important for the initial block
 chain import, but is also important if you plan to run a public Electrum server, 
@@ -67,50 +67,50 @@ has enough RAM to hold and process the leveldb database in tmpfs (e.g. /dev/shm)
 Instructions
 ------------
 
-### Step 1. Create a user for running creditbitd and Electrum server
+### Step 1. Create a user for running nevacoind and Electrum server
 
 This step is optional, but for better security and resource separation I
-suggest you create a separate user just for running `creditbitd` and Electrum.
+suggest you create a separate user just for running `nevacoind` and Electrum.
 We will also use the `~/bin` directory to keep locally installed files
 (others might want to use `/usr/local/bin` instead). We will download source
 code files to the `~/src` directory.
 
-    $ sudo adduser creditbit --disabled-password
+    $ sudo adduser nevacoin --disabled-password
     $ sudo apt-get install git
-    $ sudo su - creditbit
+    $ sudo su - nevacoin
     $ mkdir ~/bin ~/src
     $ echo $PATH
 
-If you don't see `/home/creditbit/bin` in the output, you should add this line
+If you don't see `/home/nevacoin/bin` in the output, you should add this line
 to your `.bashrc`, `.profile`, or `.bash_profile`, then logout and relogin:
 
     PATH="$HOME/bin:$PATH"
     $ exit
 
-### Step 2. Download creditbitd
+### Step 2. Download nevacoind
 
-We currently recommend creditbitd 0.10.2.2 stable.
+We currently recommend nevacoind 0.10.2.2 stable.
 
-If you prefer to compile creditbitd, here are some pointers for Ubuntu:
+If you prefer to compile nevacoind, here are some pointers for Ubuntu:
 
     $ sudo apt-get install make g++ python-leveldb git build-essential libboost-all-dev libdb++-dev libminiupnpc-dev libcurl4-openssl-dev
-    $ sudo su - creditbit
-    $ cd ~/src && git clone https://github.com/creditbit-project/creditbit.git
-    $ cd creditbit/src
+    $ sudo su - nevacoin
+    $ cd ~/src && git clone https://github.com/nevacoin-project/nevacoin.git
+    $ cd nevacoin/src
     $ make -f makefile.unix
-    $ strip creditbitd
-    $ cp -a creditbitd ~/bin
+    $ strip nevacoind
+    $ cp -a nevacoind ~/bin
 
-### Step 3. Configure and start creditbitd
+### Step 3. Configure and start nevacoind
 
-In order to allow Electrum to "talk" to `creditbitd`, we need to set up an RPC
-username and password for `creditbitd`. We will then start `creditbitd` and
+In order to allow Electrum to "talk" to `nevacoind`, we need to set up an RPC
+username and password for `nevacoind`. We will then start `nevacoind` and
 wait for it to complete downloading the blockchain.
 
-    $ mkdir ~/.creditbit
-    $ $EDITOR ~/.creditbit/creditbit.conf
+    $ mkdir ~/.nevacoin
+    $ $EDITOR ~/.nevacoin/nevacoin.conf
 
-Write this in `creditbit.conf`:
+Write this in `nevacoin.conf`:
 
     rpcuser=<rpc-username>
     rpcpassword=<rpc-password>
@@ -119,24 +119,24 @@ Write this in `creditbit.conf`:
     disablewallet=1
 
 
-If you have an existing installation of creditbitd and have not previously
+If you have an existing installation of nevacoind and have not previously
 set txindex=1 you need to reindex the blockchain by running
 
-    $ creditbitd -reindex
+    $ nevacoind -reindex
 
-If you already have a freshly indexed copy of the blockchain with txindex start `creditbitd`:
+If you already have a freshly indexed copy of the blockchain with txindex start `nevacoind`:
 
-    $ creditbitd
+    $ nevacoind
 
-Allow some time to pass, so `creditbitd` connects to the network and starts
+Allow some time to pass, so `nevacoind` connects to the network and starts
 downloading blocks. You can check its progress by running:
 
-    $ creditbitd getinfo
+    $ nevacoind getinfo
 
-Before starting the electrum server your creditbitd should have processed all
+Before starting the electrum server your nevacoind should have processed all
 blocks and caught up to the current height of the network (not just the headers).
-You should also set up your system to automatically start creditbitd at boot
-time, running as the 'creditbit' user. Check your system documentation to
+You should also set up your system to automatically start nevacoind at boot
+time, running as the 'nevacoin' user. Check your system documentation to
 find out the best way to do this.
 
 ### Step 4. Download and install Electrum Server
@@ -144,8 +144,8 @@ find out the best way to do this.
 We will download the latest git snapshot for Electrum to configure and install it:
 
     $ cd ~
-    $ git clone https://github.com/creditbit/electrum-creditbit-server.git
-    $ cd electrum-creditbit-server
+    $ git clone https://github.com/nevacoin/electrum-nevacoin-server.git
+    $ cd electrum-nevacoin-server
     $ sudo ./configure
     $ sudo python setup.py install
 
@@ -193,7 +193,7 @@ The "configure" script above will offer you to download a database with pruning 
 
 You can fetch recent copies of electrum leveldb databases with differnt pruning limits 
 and further instructions from the Electrum-CREDIT full archival server foundry at:
-http://electrum1.creditbit.org/leveldb-dump/
+http://electrum1.nevacoin.org/leveldb-dump/
 
 
 Alternatively, if you have the time and nerve, you can import the blockchain yourself.
@@ -261,11 +261,11 @@ in case you need to restore it.
 
 ### Step 9. Configure Electrum server
 
-Electrum reads a config file (/etc/electrum-creditbit.conf) when starting up. This
-file includes the database setup, creditbitd RPC setup, and a few other
+Electrum reads a config file (/etc/electrum-nevacoin.conf) when starting up. This
+file includes the database setup, nevacoind RPC setup, and a few other
 options.
 
-The "configure" script listed above will create a config file at /etc/electrum-creditbit.conf
+The "configure" script listed above will create a config file at /etc/electrum-nevacoin.conf
 which you can edit to modify the settings.
 
 Go through the config options and set them to your liking.
@@ -277,12 +277,12 @@ Electrum server currently needs quite a few file handles to use leveldb. It also
 file handles for each connection made to the server. It's good practice to increase the
 open files limit to 64k. 
 
-The "configure" script will take care of this and ask you to create a user for running electrum-creditbit-server.
-If you're using user creditbit to run electrum and have added it manually like shown in this HOWTO run 
+The "configure" script will take care of this and ask you to create a user for running electrum-nevacoin-server.
+If you're using user nevacoin to run electrum and have added it manually like shown in this HOWTO run 
 the following code to add the limits to your /etc/security/limits.conf:
 
-     echo "creditbit hard nofile 65536" >> /etc/security/limits.conf
-     echo "creditbit soft nofile 65536" >> /etc/security/limits.conf
+     echo "nevacoin hard nofile 65536" >> /etc/security/limits.conf
+     echo "nevacoin soft nofile 65536" >> /etc/security/limits.conf
 
 If you are on Debian > 8.0 Jessie or other distribution based on it, you also need to add these lines in /etc/pam.d/common-session and /etc/pam.d/common-session-noninteractive otherwise the limits in /etc/security/limits.conf will not work:
 
@@ -291,28 +291,28 @@ If you are on Debian > 8.0 Jessie or other distribution based on it, you also ne
     
 Check if the limits are changed either by logging with the user configured to run Electrum server as. Example:
 
-    su - creditbit
+    su - nevacoin
     ulimit -n
 
 Or if you use sudo and the user is added to sudoers group:
 
-    sudo -u creditbit -i ulimit -n
+    sudo -u nevacoin -i ulimit -n
 
 
 Two more things for you to consider:
 
-1. To increase security you may want to close creditbitd for incoming connections and connect outbound only
+1. To increase security you may want to close nevacoind for incoming connections and connect outbound only
 
-2. Consider restarting creditbitd (together with electrum-creditbit-server) on a weekly basis to clear out unconfirmed
+2. Consider restarting nevacoind (together with electrum-nevacoin-server) on a weekly basis to clear out unconfirmed
    transactions from the local the memory pool which did not propagate over the network.
 
 ### Step 11. (Finally!) Run Electrum server
 
 The magic moment has come: you can now start your Electrum server as root (it will su to your unprivileged user):
 
-    # electrum-creditbit-server start
+    # electrum-nevacoin-server start
 
-Note: If you want to run the server without installing it on your system, just run 'run_electrum_creditbit_server" as the
+Note: If you want to run the server without installing it on your system, just run 'run_electrum_nevacoin_server" as the
 unprivileged user.
 
 You should see this in the log file:
@@ -321,15 +321,15 @@ You should see this in the log file:
 
 If you want to stop Electrum server, use the 'stop' command:
 
-    # electrum-creditbit-server stop
+    # electrum-nevacoin-server stop
 
 
-If your system supports it, you may add electrum-creditbit-server to the /etc/init.d directory. 
+If your system supports it, you may add electrum-nevacoin-server to the /etc/init.d directory. 
 This will ensure that the server is started and stopped automatically, and that the database is closed 
 safely whenever your machine is rebooted.
 
-    # ln -s `which electrum-creditbit-server` /etc/init.d/electrum-creditbit-server
-    # update-rc.d electrum-creditbit-server defaults
+    # ln -s `which electrum-nevacoin-server` /etc/init.d/electrum-nevacoin-server
+    # update-rc.d electrum-nevacoin-server defaults
 
 ### Step 12. Test the Electrum server
 
@@ -342,16 +342,16 @@ or hostname and the port. Press 'Ok' and the client will disconnect from the
 current server and connect to your new Electrum server. You should see your
 addresses and transactions history. You can see the number of blocks and
 response time in the Server selection window. You should send/receive some
-creditbits to confirm that everything is working properly.
+nevacoins to confirm that everything is working properly.
 
 ### Step 13. Join us on IRC, subscribe to the server thread
 
 Say hi to the dev crew, other server operators, and fans on
-irc.freenode.net #electrum-creditbit and we'll try to congratulate you
+irc.freenode.net #electrum-nevacoin and we'll try to congratulate you
 on supporting the community by running an Electrum-CREDIT node.
 
 If you're operating a public Electrum-CREDIT server please subscribe
 to the following mailing list:
-https://groups.google.com/forum/#!forum/electrum-creditbit-server
+https://groups.google.com/forum/#!forum/electrum-nevacoin-server
 It'll contain announcements about important updates to Electrum-CREDIT
 server required for a smooth user experience.

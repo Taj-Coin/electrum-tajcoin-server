@@ -12,12 +12,12 @@ stratum_tcp_port = 50001
 #report_stratum_tcp_ssl_port = 50002
 password = secret
 banner = Welcome to Electrum!
-banner_file = /etc/electrum-creditbit.banner
+banner_file = /etc/electrum-nevacoin.banner
 irc = yes
-irc_nick = creditbit
-#ssl_certfile = /path/to/electrum-creditbit-server.crt
-#ssl_keyfile = /path/to/electrum-creditbit-server.key
-logfile = /var/log/electrum-creditbit.log
+irc_nick = nevacoin
+#ssl_certfile = /path/to/electrum-nevacoin-server.crt
+#ssl_keyfile = /path/to/electrum-nevacoin-server.key
+logfile = /var/log/electrum-nevacoin.log
 donation_address = 
 
 # default backend is leveldb (pruning server)
@@ -29,9 +29,9 @@ path =
 # for each address, history will be pruned if it is longer than this limit
 pruning_limit = 1000
 
-[creditbitd]
-creditbitd_host = localhost
-creditbitd_port = 5555
-# user and password from creditbit.conf
-creditbitd_user = 
-creditbitd_password = 
+[nevacoind]
+nevacoind_host = localhost
+nevacoind_port = 5555
+# user and password from nevacoin.conf
+nevacoind_user = 
+nevacoind_password = 

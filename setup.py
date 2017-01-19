@@ -1,35 +1,35 @@
 from setuptools import setup
 
 setup(
-    name="electrum-creditbit-server",
+    name="electrum-nevacoin-server",
     version="1.0",
-    scripts=['run_electrum_creditbit_server.py','electrum-creditbit-server'],
+    scripts=['run_electrum_nevacoin_server.py','electrum-nevacoin-server'],
     install_requires=['plyvel','jsonrpclib', 'irc>=11'],
     package_dir={
-        'electrumcreditbitserver':'src'
+        'electrumnevacoinserver':'src'
         },
     py_modules=[
-        'electrumcreditbitserver.__init__',
-        'electrumcreditbitserver.utils',
-        'electrumcreditbitserver.storage',
-        'electrumcreditbitserver.deserialize',
-        'electrumcreditbitserver.networks',
-        'electrumcreditbitserver.blockchain_processor',
-        'electrumcreditbitserver.server_processor',
-        'electrumcreditbitserver.processor',
-        'electrumcreditbitserver.version',
-        'electrumcreditbitserver.ircthread',
-        'electrumcreditbitserver.stratum_tcp',
-        'electrumcreditbitserver.stratum_http'
+        'electrumnevacoinserver.__init__',
+        'electrumnevacoinserver.utils',
+        'electrumnevacoinserver.storage',
+        'electrumnevacoinserver.deserialize',
+        'electrumnevacoinserver.networks',
+        'electrumnevacoinserver.blockchain_processor',
+        'electrumnevacoinserver.server_processor',
+        'electrumnevacoinserver.processor',
+        'electrumnevacoinserver.version',
+        'electrumnevacoinserver.ircthread',
+        'electrumnevacoinserver.stratum_tcp',
+        'electrumnevacoinserver.stratum_http'
     ],
-    description="Creditbit Electrum Server",
+    description="nevacoin Electrum Server",
     author="Thomas Voegtlin",
     author_email="thomasv1@gmx.deg",
-    maintainer="creditbit",
-    maintainer_email="support@creditbit.org",
+    maintainer="nevacoin",
+    maintainer_email="support@nevacoin.org",
     license="GNU Affero GPLv3",
-    url="https://github.com/creditbit/electrum-creditbit-server/",
-    long_description="""Server for the Electrum Lightweight Creditbit Wallet"""
+    url="https://github.com/nevacoin/electrum-nevacoin-server/",
+    long_description="""Server for the Electrum Lightweight nevacoin Wallet"""
 )
 
 
