@@ -1,35 +1,35 @@
 from setuptools import setup
 
 setup(
-    name="electrum-nevacoin-server",
+    name="electrum-tajcoin-server",
     version="1.0",
-    scripts=['run_electrum_nevacoin_server.py','electrum-nevacoin-server'],
+    scripts=['run_electrum_tajcoin_server.py','electrum-tajcoin-server'],
     install_requires=['plyvel','jsonrpclib', 'irc>=11'],
     package_dir={
-        'electrumnevacoinserver':'src'
+        'electrumtajcoinserver':'src'
         },
     py_modules=[
-        'electrumnevacoinserver.__init__',
-        'electrumnevacoinserver.utils',
-        'electrumnevacoinserver.storage',
-        'electrumnevacoinserver.deserialize',
-        'electrumnevacoinserver.networks',
-        'electrumnevacoinserver.blockchain_processor',
-        'electrumnevacoinserver.server_processor',
-        'electrumnevacoinserver.processor',
-        'electrumnevacoinserver.version',
-        'electrumnevacoinserver.ircthread',
-        'electrumnevacoinserver.stratum_tcp',
-        'electrumnevacoinserver.stratum_http'
+        'electrumtajcoinserver.__init__',
+        'electrumtajcoinserver.utils',
+        'electrumtajcoinserver.storage',
+        'electrumtajcoinserver.deserialize',
+        'electrumtajcoinserver.networks',
+        'electrumtajcoinserver.blockchain_processor',
+        'electrumtajcoinserver.server_processor',
+        'electrumtajcoinserver.processor',
+        'electrumtajcoinserver.version',
+        'electrumtajcoinserver.ircthread',
+        'electrumtajcoinserver.stratum_tcp',
+        'electrumtajcoinserver.stratum_http'
     ],
-    description="nevacoin Electrum Server",
+    description="tajcoin Electrum Server",
     author="Thomas Voegtlin",
     author_email="thomasv1@gmx.deg",
-    maintainer="nevacoin",
-    maintainer_email="support@nevacoin.org",
+    maintainer="tajcoin",
+    maintainer_email="support@tajcoin.org",
     license="GNU Affero GPLv3",
-    url="https://github.com/nevacoin/electrum-nevacoin-server/",
-    long_description="""Server for the Electrum Lightweight nevacoin Wallet"""
+    url="https://github.com/tajcoin/electrum-tajcoin-server/",
+    long_description="""Server for the Electrum Lightweight tajcoin Wallet"""
 )
 
 
