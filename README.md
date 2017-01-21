@@ -21,6 +21,13 @@ Features
     should be possible to write clients capable of using several
     servers.
 
+Dependencies
+------------
+apt-get install python-setuptools python-openssl python-leveldb libleveldb-dev
+
+easy_install jsonrpclib irc plyvel pyblake2
+
+
 Installation
 ------------
 
@@ -35,5 +42,5 @@ License
 -------
 
 Electrum-server is made available under the terms of the [GNU Affero General
-Public License](http://www.gnu.org/licenses/agpl.html), version 3. See the 
+Public License](http://www.gnu.org/licenses/agpl.html), version 3. See the
 included `LICENSE` for more details.
